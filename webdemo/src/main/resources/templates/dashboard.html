@@ -1,0 +1,235 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title></title>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <!--<script type="text/javascript" src="asserts/js/jquery-3.3.1.slim.min.js"></script>-->
+
+
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+</head>
+
+
+<body>
+<div class="container">
+    <div class="panel panel-danger">
+        <div class="panel-heading">welcome <a class="btn btn-dark" href="more" role="button">more
+            message</a>
+        </div>
+        <div class="panel-body">
+            <div class="btn-group">
+                <button class="btn btn-primary" id="addNew">
+                    add
+                </button>
+                <button class="btn btn-danger" id="dell">
+                    delete selected
+                </button>
+            </div>
+        </div>
+        <table class="table table-striped">
+            <thead>
+            <th><input type="checkbox" class="checkbox" id="mainCheckBox"/></th>
+            <th>id</th>
+            <th>lastName</th>
+            <th>email</th>
+            <th>gender</th>
+            <th>department</th>
+            <th>birth</th>
+            <th>Option</th>
+
+            </thead>
+            <tbody>
+            <tr th:each="emp:${emp}">
+                <td><input type="checkbox" class="checkbox"/></td>
+                <td th:text="${emp.id}">fh</td>
+                <td th:text="${emp.lastName}">h</td>
+                <td th:text="${emp.email}">849118813@QQ.COM</td>
+                <td th:text="${emp.gender}">JAX</td>
+                <td th:text="${emp.department}">IT</td>
+                <td th:text="${emp.birth}">1998</td>
+
+
+                <td>
+                    <div class="btn-group">
+
+                        <a class="btn btn-danger" id="delete_one" th:href="@{/del(i=${emp.id})}">
+                            delete
+                        </a>
+                    </div>
+                </td>
+            </tr>
+
+
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="modal fade" tabindex="-1" role="dialog" id="addModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">add modal</div>
+            <div class="modal-body">
+                <p>
+                <div class="">
+                    <form class="form-horizontal" action="/add" method="get">
+                        <div class="form-group">
+                            <label for="addid">id</label>
+                            <input type="text" class="form-control col-md-4" id="addid" name="id">
+                        </div>
+                        <div class="form-group">
+                            <label for="addln">lastName</label>
+                            <input type="text" class="form-control" id="addln" name="lastName">
+                        </div>
+                        <div class="form-group">
+                            <label for="addeml">email</label>
+                            <input type="text" class="form-control" id="addeml" name="email">
+                        </div>
+                        <div class="form-group">
+                            <label for="adddep">department</label>
+                            <input type="text" class="form-control" id="adddep" name="department">
+                        </div>
+                        <div class="form-group">
+                            <label for="addgen">gender</label>
+                            <input type="text" class="form-control" id="addgen" name="gender">
+                        </div>
+                        <div class="form-group">
+                            <label for="addbir">birth</label>
+                            <input type="text" class="form-control" id="addbir" name="birth">
+                        </div>
+                        <div class="modal-footer">
+                            <div class="btn-group">
+                                <button class="btn btn-primary" data-dismiss="modal">
+                                    close
+                                </button>
+                               
+                                <input type="submit" class="btn btn-danger" value="save1">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- /.modal -->
+<script type="text/javascript">
+    //实现全选与反选
+    $('close').click(function () {
+        $('#addModal').modal('hide');
+
+    });
+
+
+    $('#delete_one').click(function () {
+
+        }
+    );
+
+    //add btn
+
+    $('#addNew').click(function () {
+        $('#add_form input'
+        ).val('');
+
+
+        $('#addModal').modal('show');
+        $('#save_add').unbind('click').click(function () {
+            console.log(1);
+            let id = $('#addid').val();
+            let ml = $('#addeml').val();
+            let ln = $('#addln').val();
+            let dep = $('#adddep').val();
+            let gen = $('#addgen').val();
+            let bir = $('#addbir').val();
+            let staffInfo = $('<tr></tr>');
+            let DOM_checkbox = $('<td><input type="checkbox" class="checkbox"></td>');
+            let DOM_name = $("<td></td>").text(id);
+            let DOM_age = $("<td></td>").text(ml);
+            let DOM_sex = $("<td></td>").text(ln);
+            let DOM_deo = $("<td></td>").text(dep);
+            let DOM_gen = $("<td></td>").text(gen);
+            let DOM_bir = $("<td></td>").text(bir);
+            let DOM_span = $('<td>' +
+                '<button class="btn btn-primary" value="update">update</button>' + '&nbsp;' +
+                '<button class="btn btn-danger" value="delete">delete</button>' +
+                '</td>');
+            staffInfo.append(DOM_checkbox, DOM_name, DOM_age, DOM_sex, DOM_deo, DOM_gen, DOM_bir, DOM_span);
+            staffInfo.appendTo($('tbody'));
+        })
+        ;
+
+
+    })
+    ;
+
+    //update
+
+    $('tbody').on('click', '.btn-primary', function () {
+        console.log(1);
+        var tr1 = $(this).parent().parent();
+        $('#addModal').modal('show');
+
+        $("#addid").val(tr1.find("td").eq(1).text());
+        $("#addeml").val(tr1.find("td").eq(2).text());
+        $("#addln").val(tr1.find("td").eq(3).text());
+        $("#adddep").val(tr1.find("td").eq(4).text());
+        $("#addgen").val(tr1.find("td").eq(5).text());
+        $("#addbir").val(tr1.find("td").eq(6).text());
+
+    });
+
+    $('#save_alter').click(function () {
+        tr1.find("td").eq(1).html($("#addid").val());
+        tr1.find("td").eq(2).html($("#addeml").val());
+        tr1.find("td").eq(3).html($("#addln").val());
+        tr1.find("td").eq(4).html($("#adddep").val());
+        tr1.find("td").eq(5).html($("#addgen").val());
+        tr1.find("td").eq(6).html($("#addbir").val());
+        $('#addModal').modal('hide');
+    })
+
+    $("#mainCheckBox").click(function () {
+        if (this.checked) {
+            $(".checkbox").each(function () {
+                $(this).attr("checked", true);
+            });
+        } else {
+            $(".checkbox").each(function () {
+                $(this).attr("checked", false);
+            });
+        }
+    });
+
+    //			$(".btn-danger:not(#dell)").on("click", function() {
+    //				$(this).parent().parent().remove();
+    //			});
+
+    $('tbody').on('click', '.btn-danger', function () {
+        $(this).parent().parent().parent().remove();
+    })
+    //批量删除
+    $("#dell").on("click", function () {
+        $(":checkbox:not(#dell):checked").each(function () {
+            $(this).parent().parent().parent().remove();
+        })
+    });
+</script>
+</body>
+
+</html>
